@@ -1,6 +1,7 @@
 package ua.lviv.iot.lab7;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,59 +11,19 @@ public class StringProcessor {
     private String myTextInput = "";
     private static String fragmentsToFind;
 
-    public static boolean checker = false;
-    public static boolean checker_empty = false;
-
-    public static void main(String[] args) throws IOException {
-        StringProcessor stringProcessor = new StringProcessor();
-
-        stringProcessor.textEnter();
-
-        stringProcessor.sentenceRegex();
-
-        while (true) {
-            if (checker == false && fragmentsToFind.split(" ").length == 1) {
-                stringProcessor.sentenceRegex();
-            } else if (checker == true) {
-                break;
-            } else {
-                System.out.print("You enter more than one fragment\n");
-                stringProcessor.sentenceRegex();
-            }
-
-        }
-
-        stringProcessor.showResults();
+    public void setMyTextInput(String myTextInput) {
+        this.myTextInput = myTextInput;
     }
-
-    public static String readInputText() {
-
-        Scanner scanner = new Scanner(System.in, "UTF-8");
-
-        return scanner.nextLine().trim().replaceAll("\\s*[.]\\s*", ". ");
-    }
-
-    public void textEnter() {
-        System.out.print("Enter your text here: ");
-        myTextInput = readInputText();
+    
+    public void setFragmentsToRemove(String string) {
+        fragmentsToFind = string;
     }
 
     public void sentenceRegex() throws IOException {
 
         StringBuilder textInputStringBuilder = new StringBuilder(myTextInput);
 
-        while (true) {
-
-            System.out.print("Enter fragments you want to find and delete: ");
-            fragmentsToFind = readInputText();
-
-            if (fragmentsToFind.equals("break")) {
-                checker = true;
-            }
-            break;
-        }
-
-        Pattern pattern = Pattern.compile("(\\w+)?+(\\w+)?");
+        Pattern pattern = Pattern.compile("(\\w+)?+(\\w+)?\\s");
         Matcher matcher = pattern.matcher(textInputStringBuilder);
 
         while (matcher.find()) {

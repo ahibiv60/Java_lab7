@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import junit.framework.Assert;
 import ua.lviv.iot.lab7.StringProcessor;
 
 public class StringProcessorTest {
@@ -22,22 +23,20 @@ public class StringProcessorTest {
         stringProcessor = new StringProcessor();
 
     }
-    
-    @Test
-    public void testReadInputText() {
-
-        String expectedInput = "String processor. ";
-
-        InputStream inputStream = new ByteArrayInputStream(expectedInput.getBytes());
-        System.setIn(inputStream);
-
-        assertEquals("String processor. ", StringProcessor.readInputText());
-
-    }
 
     @Test
-    public void testShowResult() {
-        assertEquals("", stringProcessor.showResults());
+    public void testProcessText() throws IOException {
+        
+        stringProcessor.setMyTextInput("yellow fox jump over green dog");
+
+        stringProcessor.setFragmentsToRemove("ye"); // yellow
+        stringProcessor.sentenceRegex();
+        stringProcessor.setFragmentsToRemove("mp"); // jump
+        stringProcessor.sentenceRegex();
+        stringProcessor.setFragmentsToRemove("re"); // greed
+        stringProcessor.sentenceRegex();
+        
+        Assert.assertEquals("fox over dog", stringProcessor.showResults());
     }
 
 }
