@@ -1,12 +1,8 @@
 package ua.lviv.iot;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,17 +21,34 @@ public class StringProcessorTest {
     }
 
     @Test
+    public void testReadInputText() {
+
+        String expectedInput = "String processor. ";
+
+        InputStream inputStream = new ByteArrayInputStream(expectedInput.getBytes());
+        System.setIn(inputStream);
+
+        Assert.assertEquals("String processor. ", StringProcessor.readInputText());
+
+    }
+
+    @Test
+    public void testShowResult() {
+        Assert.assertEquals("", stringProcessor.showResults());
+    }
+
+    @Test
     public void testProcessText() throws IOException {
-        
+
         stringProcessor.setMyTextInput("yellow fox jump over green dog");
 
-        stringProcessor.setFragmentsToRemove("ye"); // yellow
+        stringProcessor.setFragmentsToRemove("ye");
         stringProcessor.sentenceRegex();
-        stringProcessor.setFragmentsToRemove("mp"); // jump
+        stringProcessor.setFragmentsToRemove("mp");
         stringProcessor.sentenceRegex();
-        stringProcessor.setFragmentsToRemove("re"); // greed
+        stringProcessor.setFragmentsToRemove("re");
         stringProcessor.sentenceRegex();
-        
+
         Assert.assertEquals("fox over dog", stringProcessor.showResults());
     }
 
